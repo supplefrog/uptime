@@ -1,1 +1,1 @@
-# uptime.github.io
+# uptime
