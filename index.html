@@ -1,141 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Seconds to days, hours, minutes calculator</title>
-<meta name="description" content="Converts and calculates the number of days, hours, minutes using seconds as input">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<base href="https://www.satsig.net/">
-<link href="https://www.satsig.net/style-ivsat.css" rel="stylesheet" type="text/css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Seconds to Days, Hours, Minutes Calculator</title>
+<meta name="description" content="Convert seconds to days, hours, minutes, and seconds in plain text with copy functionality." />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 <style>
-  #calculator-container { max-width: 340px; margin: 30px auto; box-shadow: 0 0 8px #bbb; border-radius: 8px; padding: 19px; background: #fff; }
-  .output-row { display: flex; align-items: center; background: #99ff99; border-radius: 6px; margin-top: 14px; font-size: 1.12rem; font-family: Menlo, monospace; }
-  .output-text { padding: 13px 12px; flex: 1; user-select: all; }
-  .copy-btn { background: #dedede; border: none; color: #333; font-size: 1rem; cursor: pointer; border-radius: 0 6px 6px 0; padding: 0 17px; height: 100%; transition: background 0.1s; }
-  .copy-btn:hover { background: #bbedbb; }
-  input[type="number"] { font-size: 1.1rem; width: 60%; margin-right: 8px; background: #dedede; border-radius: 5px; border: 1px solid #ccc; padding: 6px 8px; }
-  button[type="button"] { font-size: 1.08rem; margin-top: 10px; background-color: #99ff99; border: none; border-radius: 5px; padding: 8px 14px; cursor: pointer; font-weight: bold; }
-  button[type="button"]:hover { background: #bbedbb; }
-  @media (max-width: 500px) {
-    #calculator-container { width: 95vw; }
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #e0f2fe 0%, #f9fafb 100%);
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Header */
+  header {
+    background: #0284c7;
+    padding: 10px 20px;
+    color: white;
+    font-weight: 600;
+    font-size: 1.3rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  /* Main content card */
+  main {
+    margin: 30px auto;
+    width: 360px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgb(61 134 255 / 0.15);
+    padding: 28px 32px;
+  }
+  h1 {
+    margin-top: 0;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #0c4a6e;
+    text-align: center;
+  }
+  p.intro {
+    margin-top: 10px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-align: center;
+    color: #475569;
+  }
+  /* Input area */
+  .input-group {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+  input[type=number] {
+    flex-grow: 1;
+    font-size: 1.15rem;
+    padding: 10px 16px;
+    border: 2px solid #94a3b8;
+    border-radius: 8px;
+    transition: border-color 0.2s ease;
+  }
+  input[type=number]:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 8px #2563ebaa;
+    background-color: #f0f9ff;
+  }
+  button#calcBtn {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0 20px;
+    cursor: pointer;
+    font-size: 1.15rem;
+    box-shadow: 0 4px 12px rgb(59 130 246 / 0.5);
+    transition: background 0.3s ease;
+    user-select: none;
+  }
+  button#calcBtn:hover,
+  button#calcBtn:focus {
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    outline: none;
+  }
+  /* Output container */
+  .output-container {
+    margin-top: 28px;
+    background: #d1fae5;
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #065f46;
+    user-select: all;
+  }
+  /* Copy button */
+  button#copyBtn {
+    border: none;
+    background: #10b981;
+    padding: 8px 14px;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgb(16 185 129 / 0.5);
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+  }
+  button#copyBtn:hover,
+  button#copyBtn:focus {
+    background: #059669;
+    outline: none;
+  }
+  /* Clipboard icon (SVG) */
+  .copy-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+  /* Footer */
+  footer {
+    margin-top: auto;
+    padding: 18px 20px;
+    font-size: 0.85rem;
+    text-align: center;
+    color: #64748b;
+    background: #f1f5f9;
+    user-select: none;
+  }
+  footer a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+  footer a:hover {
+    text-decoration: underline;
+  }
+  /* Responsive */
+  @media (max-width: 400px) {
+    main {
+      width: 90vw;
+      padding: 20px;
+    }
+    .output-container {
+      font-size: 1.05rem;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    button#calcBtn {
+      padding: 0 12px;
+      font-size: 1rem;
+    }
   }
 </style>
 <script>
-function formatUptime(seconds) {
-  seconds = parseInt(seconds, 10);
-  if (isNaN(seconds) || seconds < 0) {
-    return 'Please enter a valid number of seconds.';
-  }
-  let days = Math.floor(seconds / 86400);
-  seconds %= 86400;
-  let hours = Math.floor(seconds / 3600);
-  seconds %= 3600;
-  let minutes = Math.floor(seconds / 60);
-  seconds %= 60;
-  let parts = [];
-  if (days) parts.push(`${days} days`);
-  if (hours) parts.push(`${hours} hours`);
-  if (minutes) parts.push(`${minutes} min`);
-  if (seconds || parts.length === 0) parts.push(`${seconds} sec`);
-  return parts.join(' ');
-}
-
-window.addEventListener('DOMContentLoaded', function () {
-  const input = document.getElementById('secondsInput');
-  const btn = document.getElementById('calcBtn');
-  const result = document.getElementById('resultText');
-  const copyBtn = document.getElementById('copyBtn');
-
-  function calculateAndCopy() {
-    const val = input.value;
-    const formatted = formatUptime(val);
-    result.textContent = formatted;
-    if (formatted.trim() !== '') {
-      navigator.clipboard.writeText(formatted.trim());
-      copyBtn.textContent = 'Copied!';
-      setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1200);
+  // Format seconds to days, hours, minutes, seconds (plain text)
+  function formatUptime(seconds) {
+    seconds = parseInt(seconds, 10);
+    if (isNaN(seconds) || seconds < 0) {
+      return 'Please enter a valid number of seconds.';
     }
+    let days = Math.floor(seconds / 86400);
+    seconds %= 86400;
+    let hours = Math.floor(seconds / 3600);
+    seconds %= 3600;
+    let minutes = Math.floor(seconds / 60);
+    seconds %= 60;
+    let parts = [];
+    if (days) parts.push(`${days} days`);
+    if (hours) parts.push(`${hours} hours`);
+    if (minutes) parts.push(`${minutes} min`);
+    if (seconds || parts.length === 0) parts.push(`${seconds} sec`);
+    return parts.join(' ');
   }
 
-  // Autofocus on page load
-  input.focus();
+  document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('secondsInput');
+    const calcBtn = document.getElementById('calcBtn');
+    const resultText = document.getElementById('resultText');
+    const copyBtn = document.getElementById('copyBtn');
 
-  // Autofocus when tab regains focus
-  window.addEventListener('focus', () => input.focus());
-
-  // Calculate & copy when button clicked
-  btn.addEventListener('click', calculateAndCopy);
-
-  // Enter key will calculate AND copy
-  input.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      calculateAndCopy();
+    function calculateAndCopy() {
+      const val = input.value;
+      const formatted = formatUptime(val);
+      resultText.textContent = formatted;
+      // Auto copy to clipboard if formatted text is valid and not empty
+      if (formatted.trim() !== '') {
+        navigator.clipboard.writeText(formatted);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => (copyBtn.textContent = 'Copy'), 1500);
+      }
     }
-  });
 
-  // Manual copy button
-  copyBtn.addEventListener('click', function() {
-    if (result.textContent.trim()) {
-      navigator.clipboard.writeText(result.textContent.trim());
-      copyBtn.textContent = 'Copied!';
-      setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1200);
-    }
+    input.focus();
+    window.addEventListener('focus', () => input.focus());
+
+    calcBtn.addEventListener('click', calculateAndCopy);
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        calculateAndCopy();
+      }
+    });
+
+    copyBtn.addEventListener('click', () => {
+      if (resultText.textContent.trim()) {
+        navigator.clipboard.writeText(resultText.textContent);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => (copyBtn.textContent = 'Copy'), 1500);
+      }
+    });
   });
-});
 </script>
 </head>
 <body>
-<div id="divhead">
-<table class="tableblue">
-<tr>
-<td style="width: 15%">
-<p><a href="/"><img src="https://www.satsig.net/satsig-logo-100w.gif" width="100" height="30" alt="www.satsig.net"><br>
-Home page</a></p>
-<p><a href="other.htm"><img src="https://www.satsig.net/satsig-logo-100w.gif" alt="Misc index page" width="100" height="30"><br>
-Misc index page</a></p>
-</td>
-<td style="width: 42%">
-<p><a href="maps/lat-long-finder.htm">Find your lat and long</a></p>
-<p><a href="seti/talking-to-icarus.htm">Link budget from Alpha Centauri</a></p>
-<p><a href="lnb/db-calculator.htm">dB calculator</a></p>
-<p><a href="focal-length-parabolic-dish.htm">Focal length calculator</a></p>
-<p><a href="training/flight-navigation-computer.htm">Flight navigation computer</a></p>
-</td>
-<td style="width: 43%">
-<p><a href="orbit-research/delta-v-geo-injection-calculator.htm">Delta V orbit injection calculator</a></p>
-<p><a href="seticalc.htm">SETI range calculator</a></p>
-<p><a href="pointing/antenna-beamwidth-calculator.htm">Antenna gain and Beamwidth calculator</a></p>
-<p><a href="degrees-minutes-seconds-calculator.htm">Deg, min, sec calculator</a></p>
-</td>
-</tr>
-</table>
-
-<h1>Calculator to work out Days, Hours, Minutes, Seconds using Sec as input</h1>
-<p>Enter the number of seconds and press Enter or click Calculate. The result will be in plain text and copied automatically if you press Enter.</p>
-
-<div id="calculator-container">
-  <div style="text-align:center;">
-    <input type="number" id="secondsInput" placeholder="Enter seconds">
-    <button type="button" id="calcBtn">Calculate</button>
+<header>
+  Seconds to Days, Hours, Minutes Calculator
+</header>
+<main>
+  <h1>Convert Seconds</h1>
+  <p class="intro">Enter seconds below and press Enter or click Calculate. Result copies automatically when calculated.</p>
+  <div class="input-group">
+    <input type="number" id="secondsInput" placeholder="Enter seconds" min="0" aria-label="Seconds input" />
+    <button id="calcBtn" type="button" aria-label="Calculate">Calculate</button>
   </div>
-  <div class="output-row" style="margin-top:15px;">
-    <span id="resultText" class="output-text"></span>
-    <button id="copyBtn" class="copy-btn" title="Copy result">Copy</button>
+  <div class="output-container" role="region" aria-live="polite" aria-atomic="true">
+    <span id="resultText" aria-live="polite" aria-atomic="true" aria-label="Conversion result"></span>
+    <button id="copyBtn" type="button" aria-label="Copy conversion result" title="Copy result">
+      Copy
+      <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m-8-8h8a2 2 0 012 2v8a2 2 0 01-2 2H9a2 2 0 01-2-2v-8a2 2 0 012-2z" />
+      </svg>
+    </button>
   </div>
-</div>
-
-<hr>
-<table class="tableblue">
-<tr>
-<td>
-<br>
-<p>Comments please, to be added to this page, to me by e-mail <a href="mailto:eric@satsig.net">Eric Johnston</a></p>
-<p>Copyright (c) 2020 Satellite Signal Ltd, All Rights Reserved. If you have a Blog, Facebook or Web site please add a link direct to this page rather than copying it. Thankyou!</p>
-<p>Page started 24 Oct 2017, 13 August 2023, 15 July 2025.</p>
-<br>
-</td>
-</tr>
-</table>
-</div>
+</main>
+<footer>
+  Comments welcome: <a href="mailto:eric@satsig.net">Eric Johnston</a><br />
+  &copy; 2020 Satellite Signal Ltd. Please link to this page instead of copying.<br />
+  Page started 24 Oct 2017, updated 15 July 2025.
+</footer>
 </body>
 </html>
