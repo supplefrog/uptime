@@ -1,0 +1,171 @@
+/* Reset and base */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #e0f2fe 0%, #f9fafb 100%);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+header {
+  background: #0284c7;
+  padding: 10px 20px;
+  color: white;
+  font-weight: 600;
+  font-size: 1.3rem;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Main content card */
+main {
+  margin: 30px auto;
+  width: 360px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgb(61 134 255 / 0.15);
+  padding: 28px 32px;
+}
+h1 {
+  margin-top: 0;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #0c4a6e;
+  text-align: center;
+}
+p.intro {
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #475569;
+}
+
+/* Input area */
+.input-group {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+input[type=number] {
+  flex-grow: 1;
+  font-size: 1.15rem;
+  padding: 10px 16px;
+  border: 2px solid #94a3b8;
+  border-radius: 8px;
+  transition: border-color 0.2s ease;
+}
+input[type=number]:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 8px #2563ebaa;
+  background-color: #f0f9ff;
+}
+
+/* Calculate button */
+button#calcBtn {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0 20px;
+  cursor: pointer;
+  font-size: 1.15rem;
+  box-shadow: 0 4px 12px rgb(59 130 246 / 0.5);
+  transition: background 0.3s ease;
+  user-select: none;
+}
+button#calcBtn:hover,
+button#calcBtn:focus {
+  background: linear-gradient(135deg, #1e40af, #2563eb);
+  outline: none;
+}
+
+/* Output container */
+.output-container {
+  margin-top: 28px;
+  background: #d1fae5;
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #065f46;
+  user-select: all;
+}
+
+/* Copy button */
+button#copyBtn {
+  border: none;
+  background: #10b981;
+  padding: 8px 14px;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgb(16 185 129 / 0.5);
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+button#copyBtn:hover,
+button#copyBtn:focus {
+  background: #059669;
+  outline: none;
+}
+
+/* Clipboard icon */
+.copy-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+/* Footer */
+footer {
+  margin-top: auto;
+  padding: 18px 20px;
+  font-size: 0.85rem;
+  text-align: center;
+  color: #64748b;
+  background: #f1f5f9;
+  user-select: none;
+}
+footer a {
+  color: #2563eb;
+  text-decoration: none;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+  main {
+    width: 90vw;
+    padding: 20px;
+  }
+  .output-container {
+    font-size: 1.05rem;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  button#calcBtn {
+    padding: 0 12px;
+    font-size: 1rem;
+  }
+}
