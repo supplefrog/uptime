@@ -1,46 +1,141 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Uptime Formatter</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    input, button { font-size: 1rem; margin-top: 10px; }
-  </style>
+<title>Seconds to days, hours, minutes calculator</title>
+<meta name="description" content="Converts and calculates the number of days, hours, minutes using seconds as input">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<base href="https://www.satsig.net/">
+<link href="https://www.satsig.net/style-ivsat.css" rel="stylesheet" type="text/css">
+<style>
+  #calculator-container { max-width: 340px; margin: 30px auto; box-shadow: 0 0 8px #bbb; border-radius: 8px; padding: 19px; background: #fff; }
+  .output-row { display: flex; align-items: center; background: #99ff99; border-radius: 6px; margin-top: 14px; font-size: 1.12rem; font-family: Menlo, monospace; }
+  .output-text { padding: 13px 12px; flex: 1; user-select: all; }
+  .copy-btn { background: #dedede; border: none; color: #333; font-size: 1rem; cursor: pointer; border-radius: 0 6px 6px 0; padding: 0 17px; height: 100%; transition: background 0.1s; }
+  .copy-btn:hover { background: #bbedbb; }
+  input[type="number"] { font-size: 1.1rem; width: 60%; margin-right: 8px; background: #dedede; border-radius: 5px; border: 1px solid #ccc; padding: 6px 8px; }
+  button[type="button"] { font-size: 1.08rem; margin-top: 10px; background-color: #99ff99; border: none; border-radius: 5px; padding: 8px 14px; cursor: pointer; font-weight: bold; }
+  button[type="button"]:hover { background: #bbedbb; }
+  @media (max-width: 500px) {
+    #calculator-container { width: 95vw; }
+  }
+</style>
+<script>
+function formatUptime(seconds) {
+  seconds = parseInt(seconds, 10);
+  if (isNaN(seconds) || seconds < 0) {
+    return 'Please enter a valid number of seconds.';
+  }
+  let days = Math.floor(seconds / 86400);
+  seconds %= 86400;
+  let hours = Math.floor(seconds / 3600);
+  seconds %= 3600;
+  let minutes = Math.floor(seconds / 60);
+  seconds %= 60;
+  let parts = [];
+  if (days) parts.push(`${days} days`);
+  if (hours) parts.push(`${hours} hours`);
+  if (minutes) parts.push(`${minutes} min`);
+  if (seconds || parts.length === 0) parts.push(`${seconds} sec`);
+  return parts.join(' ');
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  const input = document.getElementById('secondsInput');
+  const btn = document.getElementById('calcBtn');
+  const result = document.getElementById('resultText');
+  const copyBtn = document.getElementById('copyBtn');
+
+  function calculateAndCopy() {
+    const val = input.value;
+    const formatted = formatUptime(val);
+    result.textContent = formatted;
+    if (formatted.trim() !== '') {
+      navigator.clipboard.writeText(formatted.trim());
+      copyBtn.textContent = 'Copied!';
+      setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1200);
+    }
+  }
+
+  // Autofocus on page load
+  input.focus();
+
+  // Autofocus when tab regains focus
+  window.addEventListener('focus', () => input.focus());
+
+  // Calculate & copy when button clicked
+  btn.addEventListener('click', calculateAndCopy);
+
+  // Enter key will calculate AND copy
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      calculateAndCopy();
+    }
+  });
+
+  // Manual copy button
+  copyBtn.addEventListener('click', function() {
+    if (result.textContent.trim()) {
+      navigator.clipboard.writeText(result.textContent.trim());
+      copyBtn.textContent = 'Copied!';
+      setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1200);
+    }
+  });
+});
+</script>
 </head>
 <body>
+<div id="divhead">
+<table class="tableblue">
+<tr>
+<td style="width: 15%">
+<p><a href="/"><img src="https://www.satsig.net/satsig-logo-100w.gif" width="100" height="30" alt="www.satsig.net"><br>
+Home page</a></p>
+<p><a href="other.htm"><img src="https://www.satsig.net/satsig-logo-100w.gif" alt="Misc index page" width="100" height="30"><br>
+Misc index page</a></p>
+</td>
+<td style="width: 42%">
+<p><a href="maps/lat-long-finder.htm">Find your lat and long</a></p>
+<p><a href="seti/talking-to-icarus.htm">Link budget from Alpha Centauri</a></p>
+<p><a href="lnb/db-calculator.htm">dB calculator</a></p>
+<p><a href="focal-length-parabolic-dish.htm">Focal length calculator</a></p>
+<p><a href="training/flight-navigation-computer.htm">Flight navigation computer</a></p>
+</td>
+<td style="width: 43%">
+<p><a href="orbit-research/delta-v-geo-injection-calculator.htm">Delta V orbit injection calculator</a></p>
+<p><a href="seticalc.htm">SETI range calculator</a></p>
+<p><a href="pointing/antenna-beamwidth-calculator.htm">Antenna gain and Beamwidth calculator</a></p>
+<p><a href="degrees-minutes-seconds-calculator.htm">Deg, min, sec calculator</a></p>
+</td>
+</tr>
+</table>
 
-  <h2>Convert Uptime (in seconds)</h2>
-  <input type="number" id="secondsInput" placeholder="Enter seconds" />
-  <button onclick="formatUptime()">Format</button>
+<h1>Calculator to work out Days, Hours, Minutes, Seconds using Sec as input</h1>
+<p>Enter the number of seconds and press Enter or click Calculate. The result will be in plain text and copied automatically if you press Enter.</p>
 
-  <p id="result" style="margin-top: 20px; font-weight: bold;"></p>
+<div id="calculator-container">
+  <div style="text-align:center;">
+    <input type="number" id="secondsInput" placeholder="Enter seconds">
+    <button type="button" id="calcBtn">Calculate</button>
+  </div>
+  <div class="output-row" style="margin-top:15px;">
+    <span id="resultText" class="output-text"></span>
+    <button id="copyBtn" class="copy-btn" title="Copy result">Copy</button>
+  </div>
+</div>
 
-  <script>
-    function formatUptime() {
-      let seconds = parseInt(document.getElementById('secondsInput').value, 10);
-      if (isNaN(seconds) || seconds < 0) {
-        document.getElementById('result').innerText = 'Please enter a valid number of seconds.';
-        return;
-      }
-
-      let days = Math.floor(seconds / 86400);
-      seconds %= 86400;
-
-      let hours = Math.floor(seconds / 3600);
-      seconds %= 3600;
-
-      let minutes = Math.floor(seconds / 60);
-      seconds %= 60;
-
-      let parts = [];
-      if (days) parts.push(`${days} days`);
-      if (hours) parts.push(`${hours} hours`);
-      if (minutes) parts.push(`${minutes} min`);
-      if (seconds || parts.length === 0) parts.push(`${seconds} sec`);
-
-      document.getElementById('result').innerText = parts.join(' ');
-    }
-  </script>
-
+<hr>
+<table class="tableblue">
+<tr>
+<td>
+<br>
+<p>Comments please, to be added to this page, to me by e-mail <a href="mailto:eric@satsig.net">Eric Johnston</a></p>
+<p>Copyright (c) 2020 Satellite Signal Ltd, All Rights Reserved. If you have a Blog, Facebook or Web site please add a link direct to this page rather than copying it. Thankyou!</p>
+<p>Page started 24 Oct 2017, 13 August 2023, 15 July 2025.</p>
+<br>
+</td>
+</tr>
+</table>
+</div>
 </body>
 </html>
