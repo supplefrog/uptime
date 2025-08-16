@@ -25,6 +25,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const calcBtn = document.getElementById('calcBtn');
   const resultText = document.getElementById('resultText');
   const copyBtn = document.getElementById('copyBtn');
+  const themeToggle = document.getElementById('themeToggle');
+
+  // Helper: return focus to input and place caret at end
+  const refocusInput = () => {
+    if (!input) return;
+    requestAnimationFrame(() => {
+      input.focus({ preventScroll: true });
+      try {
+        const len = String(input.value ?? '').length;
+        // setSelectionRange may not apply to number inputs in all browsers; ignore errors
+        input.setSelectionRange && input.setSelectionRange(len, len);
+      } catch {}
+    });
+  };
+
+  // Prevent mouse clicks from stealing focus from the input;
+  // keyboard activation (Space/Enter) still focuses normally for a11y.
+  [calcBtn, copyBtn, themeToggle].forEach(btn => {
+    if (!btn) return;
+    btn.addEventListener('mousedown', (e) => e.preventDefault());
+  });
 
   function flashOutput() {
     const container = document.querySelector('.output-container');
@@ -46,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
       copyBtn.textContent = 'Copied!';
       setTimeout(() => (copyBtn.textContent = 'Copy'), 1200);
     }
+    refocusInput();
   }
 
   input.focus();
@@ -57,18 +79,22 @@ document.addEventListener('DOMContentLoaded', () => {
       calculateAndCopy();
     }
   });
+
   copyBtn.addEventListener('click', () => {
     const text = resultText.textContent.trim();
-    if (!text) return;
+    if (!text) {
+      refocusInput();
+      return;
+    }
     navigator.clipboard.writeText(text).then(() => {
       copyBtn.textContent = 'Copied!';
       setTimeout(() => (copyBtn.textContent = 'Copy'), 1200);
     }).catch(() => {});
+    refocusInput();
   });
 
   // Theme toggle (default follows system, toggle only flips light/dark)
   const THEME_KEY = 'theme'; // 'light' | 'dark'
-  const themeToggle = document.getElementById('themeToggle');
   const media = window.matchMedia('(prefers-color-scheme: dark)');
 
   const getStoredTheme = () => localStorage.getItem(THEME_KEY);
@@ -107,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
       setStoredTheme(next);
       applyTheme(next);
+      refocusInput();
     });
   }
 
