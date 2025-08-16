@@ -88,7 +88,7 @@
   }
 }
 
-/* Explicit overrides from the toggle (these MUST be populated) */
+/* Explicit overrides from the toggle (populated) */
 :root[data-theme="light"] {
   --bg-gradient-start: #eaf4ff;
   --bg-gradient-end: #f8fafc;
@@ -298,20 +298,30 @@ button#calcBtn:focus {
 }
 button#calcBtn:active { transform: translateY(1px); }
 
-/* Output */
+/* Output: button fixed at right, text wraps on the left */
 .output-container {
   margin-top: 26px;
   background: var(--output-bg);
   border: 1px dashed var(--output-border);
   border-radius: 12px;
   padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  column-gap: 12px;
   font: 600 1.1rem/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   color: var(--output-fg);
   user-select: text;
+  overflow-wrap: anywhere; /* ensure long text breaks nicely */
 }
+.output-container #resultText {
+  min-width: 0; /* allow wrapping within the grid cell */
+}
+.output-container #copyBtn {
+  place-self: start end; /* top-right corner */
+  white-space: nowrap;   /* keep button on a single line */
+}
+
 .output-container.flash { animation: pop .35s ease; }
 @keyframes pop {
   0%   { transform: scale(0.995); }
