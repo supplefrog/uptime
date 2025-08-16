@@ -22,6 +22,7 @@ function formatUptime(seconds) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Existing calculator logic
   const input = document.getElementById('secondsInput');
   const calcBtn = document.getElementById('calcBtn');
   const resultText = document.getElementById('resultText');
@@ -54,5 +55,58 @@ document.addEventListener('DOMContentLoaded', () => {
       copyBtn.textContent = 'Copied!';
       setTimeout(() => (copyBtn.textContent = 'Copy'), 1500);
     }
+  });
+
+  // Theme toggle (default follows system, toggle is light/dark only)
+  const THEME_KEY = 'theme'; // 'light' | 'dark'
+  const themeToggle = document.getElementById('themeToggle');
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const getStoredTheme = () => localStorage.getItem(THEME_KEY);
+  const setStoredTheme = (t) => {
+    if (t === 'light' || t === 'dark') localStorage.setItem(THEME_KEY, t);
+    else localStorage.removeItem(THEME_KEY);
+  };
+
+  const effectiveTheme = () => {
+    const stored = getStoredTheme();
+    if (stored === 'light' || stored === 'dark') return stored;
+    return media.matches ? 'dark' : 'light';
+  };
+
+  const renderToggle = (theme) => {
+    if (!themeToggle) return;
+    const isDark = theme === 'dark';
+    themeToggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+    themeToggle.title = isDark ? 'Switch to light theme' : 'Switch to dark theme';
+    themeToggle.innerHTML = isDark ? '<span aria-hidden="true">🌙</span>' : '<span aria-hidden="true">☀️</span>';
+  };
+
+  const applyTheme = (themeOrNull) => {
+    if (themeOrNull === 'light' || themeOrNull === 'dark') {
+      document.documentElement.setAttribute('data-theme', themeOrNull);
+    } else {
+      // Follow system default
+      document.documentElement.removeAttribute('data-theme');
+    }
+    renderToggle(effectiveTheme());
+  };
+
+  // Initialize theme (system default unless user has a stored preference)
+  applyTheme(getStoredTheme());
+
+  // Toggle handler: flip between light and dark and persist
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const current = effectiveTheme();
+      const next = current === 'dark' ? 'light' : 'dark';
+      setStoredTheme(next);
+      applyTheme(next);
+    });
+  }
+
+  // If following system and it changes, update UI accordingly
+  media.addEventListener('change', () => {
+    if (!getStoredTheme()) applyTheme(null);
   });
 });
