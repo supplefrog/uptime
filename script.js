@@ -1,42 +1,50 @@
-// Format seconds to days, hours, minutes, seconds
-function formatUptime(seconds) {
-  seconds = parseInt(seconds, 10);
-  if (isNaN(seconds) || seconds < 0) {
-    return 'Please enter a valid number of seconds.';
-  }
+// Format seconds into a beautified human string
+function formatUptime(totalSeconds) {
+  const n = parseInt(totalSeconds, 10);
+  if (isNaN(n) || n < 0) return 'Please enter a valid number of seconds.';
 
-  let days = Math.floor(seconds / 86400);
-  seconds %= 86400;
-  let hours = Math.floor(seconds / 3600);
-  seconds %= 3600;
-  let minutes = Math.floor(seconds / 60);
-  seconds %= 60;
+  let s = n;
+  const days = Math.floor(s / 86400); s %= 86400;
+  const hours = Math.floor(s / 3600); s %= 3600;
+  const minutes = Math.floor(s / 60); s %= 60;
+  const seconds = s;
 
-  let parts = [];
-  if (days) parts.push(`${days} days`);
-  if (hours) parts.push(`${hours} hours`);
-  if (minutes) parts.push(`${minutes} min`);
-  if (seconds || parts.length === 0) parts.push(`${seconds} sec`);
+  const plural = (v, unit) => `${v} ${v === 1 ? unit : unit + 's'}`;
+
+  const parts = [];
+  if (days) parts.push(plural(days, 'day'));
+  if (hours) parts.push(plural(hours, 'hour'));
+  if (minutes) parts.push(plural(minutes, 'minute'));
+  if (seconds || parts.length === 0) parts.push(plural(seconds, 'second'));
 
   return parts.join(' ');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Existing calculator logic
   const input = document.getElementById('secondsInput');
   const calcBtn = document.getElementById('calcBtn');
   const resultText = document.getElementById('resultText');
   const copyBtn = document.getElementById('copyBtn');
 
+  function flashOutput() {
+    const container = document.querySelector('.output-container');
+    if (!container) return;
+    container.classList.remove('flash');
+    // force reflow to replay animation
+    void container.offsetWidth;
+    container.classList.add('flash');
+  }
+
   function calculateAndCopy() {
     const val = input.value;
     const formatted = formatUptime(val);
     resultText.textContent = formatted;
+    flashOutput();
 
     if (formatted.trim() !== '') {
-      navigator.clipboard.writeText(formatted);
+      navigator.clipboard.writeText(formatted).catch(() => {});
       copyBtn.textContent = 'Copied!';
-      setTimeout(() => (copyBtn.textContent = 'Copy'), 1500);
+      setTimeout(() => (copyBtn.textContent = 'Copy'), 1200);
     }
   }
 
@@ -50,14 +58,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   copyBtn.addEventListener('click', () => {
-    if (resultText.textContent.trim()) {
-      navigator.clipboard.writeText(resultText.textContent);
+    const text = resultText.textContent.trim();
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
       copyBtn.textContent = 'Copied!';
-      setTimeout(() => (copyBtn.textContent = 'Copy'), 1500);
-    }
+      setTimeout(() => (copyBtn.textContent = 'Copy'), 1200);
+    }).catch(() => {});
   });
 
-  // Theme toggle (default follows system, toggle is light/dark only)
+  // Theme toggle (default follows system, toggle only flips light/dark)
   const THEME_KEY = 'theme'; // 'light' | 'dark'
   const themeToggle = document.getElementById('themeToggle');
   const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -76,36 +85,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const renderToggle = (theme) => {
     if (!themeToggle) return;
-    const isDark = theme === 'dark';
-    themeToggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-    themeToggle.title = isDark ? 'Switch to light theme' : 'Switch to dark theme';
-    themeToggle.innerHTML = isDark ? '<span aria-hidden="true">🌙</span>' : '<span aria-hidden="true">☀️</span>';
+    const dark = theme === 'dark';
+    themeToggle.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    themeToggle.title = dark ? 'Switch to light theme' : 'Switch to dark theme';
+    themeToggle.innerHTML = dark ? '<span aria-hidden="true">🌙</span>' : '<span aria-hidden="true">☀️</span>';
   };
 
   const applyTheme = (themeOrNull) => {
     if (themeOrNull === 'light' || themeOrNull === 'dark') {
       document.documentElement.setAttribute('data-theme', themeOrNull);
     } else {
-      // Follow system default
       document.documentElement.removeAttribute('data-theme');
     }
     renderToggle(effectiveTheme());
   };
 
-  // Initialize theme (system default unless user has a stored preference)
   applyTheme(getStoredTheme());
 
-  // Toggle handler: flip between light and dark and persist
   if (themeToggle) {
     themeToggle.addEventListener('click', () => {
-      const current = effectiveTheme();
-      const next = current === 'dark' ? 'light' : 'dark';
+      const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
       setStoredTheme(next);
       applyTheme(next);
     });
   }
 
-  // If following system and it changes, update UI accordingly
   media.addEventListener('change', () => {
     if (!getStoredTheme()) applyTheme(null);
   });
