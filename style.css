@@ -1,12 +1,182 @@
+/* Theme tokens (light defaults) */
+:root {
+  --bg-gradient-start: #e0f2fe;
+  --bg-gradient-end: #f9fafb;
+  --text: #333333;
+
+  --header-bg: #0284c7;
+  --header-fg: #ffffff;
+
+  --card-bg: #ffffff;
+  --card-shadow: 0 8px 24px rgb(61 134 255 / 0.15);
+
+  --h1-color: #0c4a6e;
+  --intro-color: #475569;
+
+  --input-bg: #ffffff;
+  --input-fg: #111827;
+  --input-border: #94a3b8;
+  --input-focus-border: #2563eb;
+  --input-focus-glow: #2563ebaa;
+  --input-focus-bg: #f0f9ff;
+
+  --btn-primary-fg: #ffffff;
+  --btn-primary-start: #2563eb;
+  --btn-primary-end: #3b82f6;
+  --btn-primary-hover-start: #1e40af;
+  --btn-primary-hover-end: #2563eb;
+  --btn-primary-shadow: 0 4px 12px rgb(59 130 246 / 0.5);
+
+  --output-bg: #d1fae5;
+  --output-fg: #065f46;
+
+  --copy-btn-bg: #10b981;
+  --copy-btn-fg: #ffffff;
+  --copy-btn-hover-bg: #059669;
+
+  --footer-bg: #f1f5f9;
+  --footer-fg: #64748b;
+  --link-color: #2563eb;
+
+  --radius: 12px;
+}
+
+/* System dark default if no explicit preference is set */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-gradient-start: #0b0b0c;
+    --bg-gradient-end: #111316;
+    --text: #e5e7eb;
+
+    --header-bg: #075985;
+    --header-fg: #e5e7eb;
+
+    --card-bg: #0f172a;
+    --card-shadow: none;
+
+    --h1-color: #93c5fd;
+    --intro-color: #9aa2ad;
+
+    --input-bg: #111827;
+    --input-fg: #e5e7eb;
+    --input-border: #374151;
+    --input-focus-border: #60a5fa;
+    --input-focus-glow: #60a5fa80;
+    --input-focus-bg: #0f172a;
+
+    --btn-primary-fg: #ffffff;
+    --btn-primary-start: #1d4ed8;
+    --btn-primary-end: #2563eb;
+    --btn-primary-hover-start: #1e3a8a;
+    --btn-primary-hover-end: #1d4ed8;
+    --btn-primary-shadow: none;
+
+    --output-bg: #064e3b;
+    --output-fg: #a7f3d0;
+
+    --copy-btn-bg: #10b981;
+    --copy-btn-fg: #ffffff;
+    --copy-btn-hover-bg: #059669;
+
+    --footer-bg: #0b1220;
+    --footer-fg: #9aa2ad;
+    --link-color: #60a5fa;
+  }
+}
+
+/* Explicit overrides from the toggle */
+:root[data-theme="light"] {
+  --bg-gradient-start: #e0f2fe;
+  --bg-gradient-end: #f9fafb;
+  --text: #333333;
+
+  --header-bg: #0284c7;
+  --header-fg: #ffffff;
+
+  --card-bg: #ffffff;
+  --card-shadow: 0 8px 24px rgb(61 134 255 / 0.15);
+
+  --h1-color: #0c4a6e;
+  --intro-color: #475569;
+
+  --input-bg: #ffffff;
+  --input-fg: #111827;
+  --input-border: #94a3b8;
+  --input-focus-border: #2563eb;
+  --input-focus-glow: #2563ebaa;
+  --input-focus-bg: #f0f9ff;
+
+  --btn-primary-fg: #ffffff;
+  --btn-primary-start: #2563eb;
+  --btn-primary-end: #3b82f6;
+  --btn-primary-hover-start: #1e40af;
+  --btn-primary-hover-end: #2563eb;
+  --btn-primary-shadow: 0 4px 12px rgb(59 130 246 / 0.5);
+
+  --output-bg: #d1fae5;
+  --output-fg: #065f46;
+
+  --copy-btn-bg: #10b981;
+  --copy-btn-fg: #ffffff;
+  --copy-btn-hover-bg: #059669;
+
+  --footer-bg: #f1f5f9;
+  --footer-fg: #64748b;
+  --link-color: #2563eb;
+}
+
+:root[data-theme="dark"] {
+  --bg-gradient-start: #0b0b0c;
+  --bg-gradient-end: #111316;
+  --text: #e5e7eb;
+
+  --header-bg: #075985;
+  --header-fg: #e5e7eb;
+
+  --card-bg: #0f172a;
+  --card-shadow: none;
+
+  --h1-color: #93c5fd;
+  --intro-color: #9aa2ad;
+
+  --input-bg: #111827;
+  --input-fg: #e5e7eb;
+  --input-border: #374151;
+  --input-focus-border: #60a5fa;
+  --input-focus-glow: #60a5fa80;
+  --input-focus-bg: #0f172a;
+
+  --btn-primary-fg: #ffffff;
+  --btn-primary-start: #1d4ed8;
+  --btn-primary-end: #2563eb;
+  --btn-primary-hover-start: #1e3a8a;
+  --btn-primary-hover-end: #1d4ed8;
+  --btn-primary-shadow: none;
+
+  --output-bg: #064e3b;
+  --output-fg: #a7f3d0;
+
+  --copy-btn-bg: #10b981;
+  --copy-btn-fg: #ffffff;
+  --copy-btn-hover-bg: #059669;
+
+  --footer-bg: #0b1220;
+  --footer-fg: #9aa2ad;
+  --link-color: #60a5fa;
+}
+
 /* Reset and base */
 * {
   box-sizing: border-box;
 }
+html, body {
+  height: 100%;
+}
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #e0f2fe 0%, #f9fafb 100%);
-  color: #333;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  color: var(--text);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -14,29 +184,50 @@ body {
 
 /* Header */
 header {
-  background: #0284c7;
-  padding: 10px 20px;
-  color: white;
+  position: relative;
+  background: var(--header-bg);
+  padding: 10px 48px 10px 20px; /* leave room for toggle on the right */
+  color: var(--header-fg);
   font-weight: 600;
   font-size: 1.3rem;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+/* Theme toggle button */
+.theme-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  color: var(--header-fg);
+  border: 1px solid rgb(255 255 255 / 0.25);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  line-height: 1;
+}
+.theme-toggle:focus {
+  outline: 2px solid #ffffffaa;
+  outline-offset: 2px;
+}
+
 /* Main content card */
 main {
   margin: 30px auto;
   width: 360px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgb(61 134 255 / 0.15);
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
   padding: 28px 32px;
 }
 h1 {
   margin-top: 0;
   font-weight: 700;
   font-size: 1.5rem;
-  color: #0c4a6e;
+  color: var(--h1-color);
   text-align: center;
 }
 p.intro {
@@ -44,7 +235,7 @@ p.intro {
   font-weight: 500;
   font-size: 0.9rem;
   text-align: center;
-  color: #475569;
+  color: var(--intro-color);
 }
 
 /* Input area */
@@ -58,41 +249,43 @@ input[type=number] {
   flex-grow: 1;
   font-size: 1.15rem;
   padding: 10px 16px;
-  border: 2px solid #94a3b8;
+  color: var(--input-fg);
+  background: var(--input-bg);
+  border: 2px solid var(--input-border);
   border-radius: 8px;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 input[type=number]:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 8px #2563ebaa;
-  background-color: #f0f9ff;
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 8px var(--input-focus-glow);
+  background-color: var(--input-focus-bg);
 }
 
 /* Calculate button */
 button#calcBtn {
-  background: linear-gradient(135deg, #2563eb, #3b82f6);
-  color: white;
+  background: linear-gradient(135deg, var(--btn-primary-start), var(--btn-primary-end));
+  color: var(--btn-primary-fg);
   border: none;
   border-radius: 8px;
   font-weight: 600;
   padding: 0 20px;
   cursor: pointer;
   font-size: 1.15rem;
-  box-shadow: 0 4px 12px rgb(59 130 246 / 0.5);
+  box-shadow: var(--btn-primary-shadow);
   transition: background 0.3s ease;
   user-select: none;
 }
 button#calcBtn:hover,
 button#calcBtn:focus {
-  background: linear-gradient(135deg, #1e40af, #2563eb);
+  background: linear-gradient(135deg, var(--btn-primary-hover-start), var(--btn-primary-hover-end));
   outline: none;
 }
 
 /* Output container */
 .output-container {
   margin-top: 28px;
-  background: #d1fae5;
+  background: var(--output-bg);
   border-radius: 10px;
   padding: 14px 18px;
   display: flex;
@@ -101,18 +294,18 @@ button#calcBtn:focus {
   font-family: 'Courier New', Courier, monospace;
   font-weight: 600;
   font-size: 1.2rem;
-  color: #065f46;
+  color: var(--output-fg);
   user-select: all;
 }
 
 /* Copy button */
 button#copyBtn {
   border: none;
-  background: #10b981;
+  background: var(--copy-btn-bg);
   padding: 8px 14px;
   border-radius: 8px;
   box-shadow: 0 3px 8px rgb(16 185 129 / 0.5);
-  color: white;
+  color: var(--copy-btn-fg);
   cursor: pointer;
   font-weight: 700;
   font-size: 1rem;
@@ -124,7 +317,7 @@ button#copyBtn {
 }
 button#copyBtn:hover,
 button#copyBtn:focus {
-  background: #059669;
+  background: var(--copy-btn-hover-bg);
   outline: none;
 }
 
@@ -141,12 +334,12 @@ footer {
   padding: 18px 20px;
   font-size: 0.85rem;
   text-align: center;
-  color: #64748b;
-  background: #f1f5f9;
+  color: var(--footer-fg);
+  background: var(--footer-bg);
   user-select: none;
 }
 footer a {
-  color: #2563eb;
+  color: var(--link-color);
   text-decoration: none;
 }
 footer a:hover {
