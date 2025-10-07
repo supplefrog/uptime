@@ -14,8 +14,8 @@ function formatUptime(totalSeconds) {
   const parts = [];
   if (days) parts.push(plural(days, 'day'));
   if (hours) parts.push(plural(hours, 'hour'));
-  if (minutes) parts.push(plural(minutes, 'minute'));
-  if (seconds || parts.length === 0) parts.push(plural(seconds, 'second'));
+  if (minutes) parts.push(plural(min, 'min'));
+  if (seconds || parts.length === 0) parts.push(plural(sec, 'sec'));
 
   return parts.join(' ');
 }
