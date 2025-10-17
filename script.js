@@ -12,10 +12,10 @@ function formatUptime(totalSeconds) {
   const plural = (v, unit) => `${v} ${v === 1 ? unit : unit + 's'}`;
 
   const parts = [];
-  if (days) parts.push(plural(s, 'day'));
-  if (hours) parts.push(plural(s, 'hour'));
-  if (minutes) parts.push(s, 'min');
-  if (seconds || parts.length === 0) parts.push(s, 'sec');
+  if (days) parts.push(plural(days, 'day'));
+  if (hours) parts.push(plural(hours, 'hour'));
+  if (minutes) parts.push(plural(minutes, 'min'));
+  if (seconds || parts.length === 0) parts.push(plural(seconds, 'sec'));
 
   return parts.join(' ');
 }
